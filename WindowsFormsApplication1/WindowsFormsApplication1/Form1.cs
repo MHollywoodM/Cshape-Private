@@ -16,5 +16,10 @@ namespace WindowsFormsApplication1
         {
             InitializeComponent();
         }
+
+        private void simpleButton_Commit_Click(object sender, EventArgs e)
+        {
+            this.textEdit_Result.Text = HttpService.HttpServiceLogic.Post2(new Uri(this.textEdit_Uri.Text), this.textEdit_Para.Text);
+        }
     }
 }
