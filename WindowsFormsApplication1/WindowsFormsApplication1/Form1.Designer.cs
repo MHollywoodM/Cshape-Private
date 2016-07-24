@@ -77,6 +77,7 @@
             this.simpleButton_Reset.StyleController = this.layoutControl1;
             this.simpleButton_Reset.TabIndex = 8;
             this.simpleButton_Reset.Text = "Reset";
+            this.simpleButton_Reset.Click += new System.EventHandler(this.simpleButton_Reset_Click);
             // 
             // simpleButton_Commit
             // 

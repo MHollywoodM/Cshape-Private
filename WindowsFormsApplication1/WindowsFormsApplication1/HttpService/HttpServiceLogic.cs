@@ -75,5 +75,51 @@ namespace WindowsFormsApplication1.HttpService
             return result;
         }
 
+
+        public static Task<string> PostAsync(Uri url,string jsonRequestString)
+        {
+            return Task.Run<string>(() => {
+
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                request.Method = "POST";
+                request.ContentType = "application/json;charset=UTF-8";
+                request.Accept = "application/json";
+                byte[] bytes = null;
+                if (string.IsNullOrEmpty(jsonRequestString))
+                {
+                    request.ContentLength = 0;
+                }
+                else
+                {
+                    bytes = Encoding.UTF8.GetBytes(jsonRequestString);
+                    request.ContentLength = bytes.Length;
+                }
+
+                if (bytes != null && bytes.Length > 0)
+                {
+                    System.IO.Stream postStream = request.GetRequestStream();
+                    postStream.Write(bytes, 0, bytes.Length);
+                    postStream.Close();
+                }
+
+                try
+                {
+                    HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                    System.IO.StreamReader reader = new System.IO.StreamReader(response.GetResponseStream());
+                    string jsonResponseString = reader.ReadToEnd();
+                    reader.Close();
+                    response.Close();
+                    if (response.StatusCode == HttpStatusCode.OK)
+                    {
+                        return jsonResponseString;
+                    }
+                    return string.Empty;
+                }
+                catch (WebException ex)
+                {
+                    throw new WebException(ex.HResult + ex.Status + ex.Message);
+                }       
+            });
+        }
     }
 }

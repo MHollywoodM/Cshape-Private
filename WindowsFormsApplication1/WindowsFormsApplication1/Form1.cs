@@ -21,5 +21,10 @@ namespace WindowsFormsApplication1
         {
             this.textEdit_Result.Text = HttpService.HttpServiceLogic.Post2(new Uri(this.textEdit_Uri.Text), this.textEdit_Para.Text);
         }
+
+        private async void simpleButton_Reset_Click(object sender, EventArgs e)
+        {
+            this.textEdit_Result.Text = await (HttpService.HttpServiceLogic.PostAsync(new Uri(this.textEdit_Uri.Text), this.textEdit_Para.Text));
+        }
     }
 }
